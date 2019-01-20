@@ -51,7 +51,6 @@ namespace Chat
             {
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
 
             app.UseCors(x => x
                 .AllowCredentials()
