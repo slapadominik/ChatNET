@@ -1,5 +1,5 @@
 {
-  "name": "pgsmessnger.client",
+  "name": "chat.client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

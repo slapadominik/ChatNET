@@ -33,7 +33,9 @@ export default function (state = initialState, action) {
         case LOGOUT: {
             return {
                 ...state,
-                user: null
+                user: null,
+                connectedUsers: [],
+                messages: []
             }
         }
 

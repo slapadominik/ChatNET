@@ -21,8 +21,11 @@ class Login extends Component {
                 this.props.history.push('/')
             }
         }).catch(error => {
-            if (error.response.status === 409) {
+            if (error.response) {
                 alert(error.response.data);
+            }
+            else{
+                alert(error + '. Probably problem with CORS on the server side.')
             }
         });
     }
