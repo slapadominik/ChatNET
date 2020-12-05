@@ -16,7 +16,7 @@ namespace Chat.Services
 
         public SecurityService(IOptions<AppSettings> appSettings)
         {
-            _tokenHandler = new JwtSecurityTokenHandler();
+            _tokenHandler =  new JwtSecurityTokenHandler();
             _appSettings = appSettings.Value;
         }
 

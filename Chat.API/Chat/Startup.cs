@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Threading.Tasks;
 using Chat.Helpers;
-using Chat.Hubs.Interfaces;
+using Chat.Hubs;
 using Chat.Services;
 using Chat.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,10 +30,12 @@ namespace Chat
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
             ConfigureAuthentication(services, appSettingsSection);
-            services.AddTransient<ISecurityService, SecurityService>();
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddCors();
-            
-            //TODO: MIEJSCE NA IMPLEMENTACJE
+            services.AddSignalR();
+            services.AddSingleton<IUserService, UserService>();
+            services.AddTransient<ISecurityService, SecurityService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,7 +58,12 @@ namespace Chat
 
             app.UseAuthentication();
 
-            //TODO: MIEJSCE NA IMPLEMENTACJE
+            app.UseSignalR(route =>
+            {
+                route.MapHub<ChatHub>("/hubs/chat");
+            });
+
+            app.UseMvc();
         }
 
         private void ConfigureAuthentication(IServiceCollection services, IConfigurationSection appSettingsSection)
@@ -70,12 +73,12 @@ namespace Chat
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
             services.AddAuthentication(options =>
-            {
-                // Identity made Cookie authentication the default.
-                // However, we want JWT Bearer Auth to be the default.
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+                {
+                    // Identity made Cookie authentication the default.
+                    // However, we want JWT Bearer Auth to be the default.
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters =
                         new TokenValidationParameters

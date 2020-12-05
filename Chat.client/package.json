@@ -6,6 +6,8 @@
     "@aspnet/signalr": "^1.1.0",
     "axios": "^0.18.0",
     "bootstrap": "^4.1.3",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.11",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-redux": "^6.0.0",

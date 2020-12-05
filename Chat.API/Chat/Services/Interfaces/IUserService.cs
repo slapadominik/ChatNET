@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using Chat.Models;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Chat.Services.Interfaces
 {
