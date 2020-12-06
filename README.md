@@ -3,6 +3,8 @@ Simple chat application created as an academic project. It's purpose is to prese
 
 <a target="_blank" href="https://chatnet1.azurewebsites.net/">View Demo</a>
 
+![alt text](https://github.com/slapadominik/ChatNET/blob/master/docs/Images/UI.png)
+
 ## Built With
 
 * [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/) - .NET framework for creating web apps
