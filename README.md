@@ -3,7 +3,7 @@ Simple chat application created as an academic project. It's purpose is to prese
 
 <a target="_blank" href="https://chatnet1.azurewebsites.net/">View Demo</a>
 
-[![Product Name Screen Shot][product-screenshot]](https://github.com/slapadominik/ChatNET/blob/master/docs/Images/UI.png)
+![alt text](https://github.com/slapadominik/ChatNET/blob/master/docs/Images/UI.png)
 
 ## Built With
 
