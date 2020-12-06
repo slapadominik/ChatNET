@@ -1,7 +1,7 @@
 # ChatNET
 Simple chat application created as an academic project. It's purpose is to present capabilities of SignalR Core - a library for creating real-time web apps. 
 
-<a target="_blank" href="https://chatnet.azurewebsites.net/">View Demo</a>
+<a target="_blank" href="https://chatnet1.azurewebsites.net/">View Demo</a>
 
 ## Built With
 
