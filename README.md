@@ -3,11 +3,16 @@ Simple chat application created as an academic project. It's purpose is to prese
 
 <a target="_blank" href="https://chatnet1.azurewebsites.net/">View Demo</a>
 
-![alt text](https://github.com/slapadominik/ChatNET/blob/master/docs/Images/UI.png)
-
 ## Built With
 
 * [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/) - .NET framework for creating web apps
 * [SignalR Core](https://docs.microsoft.com/en-us/aspnet/core/signalr/introduction?view=aspnetcore-5.0) - Open-source library that simplifies adding real-time web functionality to .NET apps
 * [React](https://reactjs.org/) - JavaScript library for building user interfaces
 * [Redux](https://redux.js.org/) - State Container for JS Apps
+
+## Screenshot
+
+
+<br/>
+
+![alt text](https://github.com/slapadominik/ChatNET/blob/master/docs/Images/UI.png)
