@@ -1,6 +1,6 @@
 ﻿namespace Chat.DTO
 {
-    public class UserCredentials
+    public class UserViewModel
     {
         public string Username { get; set; }
     }

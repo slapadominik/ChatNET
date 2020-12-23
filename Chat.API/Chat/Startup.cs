@@ -16,6 +16,8 @@ namespace Chat
 {
     public class Startup
     {
+        private readonly string FrontEndOrigin = "_frontEndOrigin";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,7 +34,18 @@ namespace Chat
             ConfigureAuthentication(services, appSettingsSection);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: FrontEndOrigin,
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000", "https://chatnet1.azurewebsites.net")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    });
+            });
+
             services.AddSignalR();
             services.AddSingleton<IUserService, UserService>();
             services.AddTransient<ISecurityService, SecurityService>();
@@ -50,11 +63,7 @@ namespace Chat
                 app.UseHsts();
             }
 
-            app.UseCors(x => x
-                .AllowCredentials()
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+            app.UseCors(FrontEndOrigin);
 
             app.UseAuthentication();
 
@@ -68,14 +77,11 @@ namespace Chat
 
         private void ConfigureAuthentication(IServiceCollection services, IConfigurationSection appSettingsSection)
         {
-            // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
-            services.AddAuthentication(options =>
+            services.AddAuthentication(options => 
                 {
-                    // Identity made Cookie authentication the default.
-                    // However, we want JWT Bearer Auth to be the default.
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
@@ -90,21 +96,15 @@ namespace Chat
                             IssuerSigningKey = new SymmetricSecurityKey(key)
                         };
 
-                    // We have to hook the OnMessageReceived event in order to
-                    // allow the JWT authentication handler to read the access
-                    // token from the query string when a WebSocket or 
-                    // Server-Sent Events request comes in.
                     options.Events = new JwtBearerEvents
                     {
                         OnMessageReceived = context =>
                         {
                             var accessToken = context.Request.Query["access_token"];
-                            // If the request is for our hub...
                             var path = context.HttpContext.Request.Path;
                             if (!string.IsNullOrEmpty(accessToken) &&
                                 (path.StartsWithSegments("/hubs/chat")))
                             {
-                                // Read the token out of the query string
                                 context.Token = accessToken;
                             }
                             return Task.CompletedTask;

@@ -3,8 +3,6 @@ using Chat.DTO;
 using Chat.Exceptions;
 using Chat.Models;
 using Chat.Services.Interfaces;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chat.Controllers
@@ -21,11 +19,11 @@ namespace Chat.Controllers
         }
 
         [HttpPost]
-        public ActionResult<User> CreateUser([FromBody] UserCredentials userCredentials)
+        public ActionResult<User> CreateUser([FromBody] UserViewModel userViewModel)
         {
             try
             {
-                var user = _userService.CreateUser(userCredentials.Username);
+                var user = _userService.CreateUser(userViewModel.Username);
                 return StatusCode(201, user);
             }
             catch (UsernameIsTakenException ex)

@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://chat20201205121625.azurewebsites.net';
+export const BASE_URL = 'http://localhost:51686';

@@ -7,7 +7,7 @@ import Navbar from './components/Navbar'
 import Login from './components/Login';
 
 export default (
-    <div>
+    <div className="h-100">
         <Navbar />
         <Route exact path="/" component={WithAuthorization(Main)} />
         <Route exact path="/login" component={Login} />
