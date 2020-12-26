@@ -1,111 +1,133 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getNewMessage, setConnection, userJoined, userLeft, setConnectedUsers } from '../actions/messages';
+import {
+  getNewMessage,
+  setConnection,
+  userJoined,
+  userLeft,
+  setConnectedUsers,
+} from '../actions/messages';
 import Message from './Message';
 import * as SignalR from '@aspnet/signalr';
 import './Main.css';
-import {BASE_URL} from '../constants';
+import { BASE_URL } from '../constants';
+import Sidebar from './Sidebar';
 
 class Main extends Component {
-constructor() {
+  constructor() {
     super();
-    this.state={
-        newMessage: '',
-    }
+    this.state = {
+      newMessage: '',
+    };
     this.connection = new SignalR.HubConnectionBuilder()
-    .withUrl(BASE_URL+'/hubs/chat', { accessTokenFactory: () => this.props.user.token })
-    .build();
-}
+      .withUrl(BASE_URL + '/hubs/chat', {
+        accessTokenFactory: () => this.props.user.token,
+      })
+      .build();
+  }
 
-componentDidMount() {
+  componentDidMount() {
     this.setUpConnection();
-}
+  }
 
-setUpConnection = () => {
-    this.connection.on("messageAdded", data => {
-        this.props.getNewMessage(data);
+  setUpConnection = () => {
+    this.connection.on('messageAdded', (data) => {
+      this.props.getNewMessage(data);
     });
 
-    this.connection.on("userJoined", username => {
-        this.props.userJoined(username);
+    this.connection.on('userJoined', (username) => {
+      this.props.userJoined(username);
     });
 
-    this.connection.on("userLeft", username => {
-        this.props.userLeft(username);
-    })
+    this.connection.on('userLeft', (username) => {
+      this.props.userLeft(username);
+    });
 
-    this.connection.on("setConnectedUsers", usernames => {
-        console.log(usernames);
-        this.props.setConnectedUsers(usernames);
+    this.connection.on('setConnectedUsers', (usernames) => {
+      this.props.setConnectedUsers(usernames);
     });
 
     this.props.setConnection(this.connection);
-    
-    this.connection
-            .start()
-            .then(() => console.log("Connection success"))
-            .catch(err => console.log(err))
-}
 
-getUsername = () => {
+    this.connection.start().catch((err) => console.log(err));
+  };
+
+  getUsername = () => {
     return this.props.user.username;
-}
+  };
 
-handleMessageChange = e => {
-    this.setState({newMessage: e.target.value})
-}
+  handleMessageChange = (e) => {
+    this.setState({ newMessage: e.target.value });
+  };
 
-handleSend = () => {
-    this.connection.invoke("sendMessage", {
-            from: this.getUsername(),
-            content: this.state.newMessage,
-        })
-    this.setState({newMessage: ''})
-}
+  handleSend = () => {
+    this.connection.invoke('sendMessage', {
+      from: this.getUsername(),
+      content: this.state.newMessage,
+    });
+    this.setState({ newMessage: '' });
+  };
 
-checkIfAuthor = name => {
-    return this.getUsername() === name
-}
+  checkIfAuthor = (name) => {
+    return this.getUsername() === name;
+  };
 
-renderMessages = () => {
-    return this.props.messages.map((message, index) => 
-        <Message key={index} from={message.from} content={message.content} isAuthor={this.checkIfAuthor(message.from)} />
-    )
-}
+  renderMessages = () => {
+    return this.props.messages.map((message, index) => (
+      <Message
+        key={index}
+        from={message.from}
+        content={message.content}
+        isAuthor={this.checkIfAuthor(message.from)}
+      />
+    ));
+  };
 
-    render() {
-        return (
-            <div className="container">
-                <div className="row username">
-                    <div className="col-6 offset-6">
-                        <h4>User: {this.getUsername()}</h4>
-                    </div>   
-                </div>
-                {this.renderMessages()}
-                <div className="row">
-                    <div className="col-2"></div>
-                    <div className="col-10">
-                    <div className="input-group">
-                        <input
-                                className="form-control"
-                                placeholder="Type something.."
-                                value={this.state.newMessage}
-                                onChange={this.handleMessageChange}
-                            />
-                        <div className="input-group-prepend">
-                           <button className="btn btn-warning btn-block" onClick={this.handleSend}>Send</button>
-                        </div>
-                    </div>
-                    </div>
-                </div>              
+  render() {
+    return (
+      <div className="container-fluid h-94">
+        <div className="row h-100">
+          <Sidebar />
+          <main className="col-md-10">
+            <div className="row username">
+              <div className="col text-center">
+                <h4>User: {this.getUsername()}</h4>
+              </div>
             </div>
-        )
-    }
+            <div className="container-msgs">{this.renderMessages()}</div>
+            <div className="row fixed-bottom">
+              <div className="col-md-11 offset-md-1">
+                <div className="input-group">
+                  <input
+                    className="form-control"
+                    placeholder="Type something.."
+                    value={this.state.newMessage}
+                    onChange={this.handleMessageChange}
+                  />
+                  <div className="input-group-prepend">
+                    <button
+                      className="btn btn-warning btn-block"
+                      onClick={this.handleSend}
+                    >
+                      Send
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = state => ({
-    messages: state.messages.messages,
-    user: state.messages.user
+const mapStateToProps = (state) => ({
+  messages: state.messages.messages,
+  user: state.messages.user,
 });
 
-export default connect(mapStateToProps, { getNewMessage, setConnection, userJoined, userLeft, setConnectedUsers })(Main)
+export default connect(
+  mapStateToProps,
+  { getNewMessage, setConnection, userJoined, userLeft, setConnectedUsers },
+)(Main);

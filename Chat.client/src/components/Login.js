@@ -41,9 +41,10 @@ class Login extends Component {
   render() {
     const { username } = this.state;
     return (
-      <div className="container h-100">
-        <div className="row align-items-center h-100">
-        <img src={Mailbox} className="photo" alt="mailbox"/>
+      <div className="d-flex align-items-center h-100">
+        <div className="container text-center">
+          <h1>Chat.NET</h1>
+          <img src={Mailbox} className="photo" alt="mailbox" />
           <div className="input-group col-md-6 mx-auto">
             <input
               className={'form-control'}
@@ -52,13 +53,10 @@ class Login extends Component {
               type="text"
               onChange={this.handleUsernameChange}
             />
-             <button className={'btn btn-warning'} onClick={this.handleLogin}>
+            <button className={'btn btn-warning'} onClick={this.handleLogin}>
               Login
             </button>
           </div>
-        
-           
-         
         </div>
       </div>
     );

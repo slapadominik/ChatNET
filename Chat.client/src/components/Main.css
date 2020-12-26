@@ -1,3 +1,13 @@
 .username {
     margin-top: 10px;
 }
+
+.h-94{
+    height: 94% !important;
+}
+
+.container-msgs {
+    height: calc(100vh - 172px);
+    overflow-y: scroll;
+    overflow-x:hidden;
+}
