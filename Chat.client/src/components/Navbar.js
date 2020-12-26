@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import './Navbar.css';
 import { logout } from '../actions/messages';
 import { connect } from 'react-redux';
+import "../../node_modules/jquery/dist/jquery.min.js";
+import "../../node_modules/bootstrap/dist/js/bootstrap.min.js";
 
 class Navbar extends Component {
   logout = () => {
@@ -24,16 +25,16 @@ class Navbar extends Component {
           className="navbar-toggler"
           type="button"
           data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon" />
         </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav">
-            <li className="nav-item" onClick={this.logout}>
+            <li className="nav-item " onClick={this.logout}>
               <Link to="/logout" className="nav-link">
                 Logout
               </Link>

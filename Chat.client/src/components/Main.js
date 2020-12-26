@@ -88,13 +88,13 @@ class Main extends Component {
       <div className="container-fluid h-94">
         <div className="row h-100">
           <Sidebar />
-          <main className="col-md-10">
+          <main className="col-md-11">
             <div className="row username">
               <div className="col text-center">
-                <h4>User: {this.getUsername()}</h4>
+                <h4>Logged as <u>{this.getUsername()}</u></h4>
               </div>
             </div>
-            <div className="container-msgs">{this.renderMessages()}</div>
+            <div className="container-msgs mt-2">{this.renderMessages()}</div>
             <div className="row fixed-bottom">
               <div className="col-md-11 offset-md-1">
                 <div className="input-group">
@@ -106,7 +106,7 @@ class Main extends Component {
                   />
                   <div className="input-group-prepend">
                     <button
-                      className="btn btn-warning btn-block"
+                      className="btn btn-primary btn-block"
                       onClick={this.handleSend}
                     >
                       Send

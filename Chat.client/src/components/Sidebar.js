@@ -14,7 +14,7 @@ const Sidebar = () => {
     ));
   };
   return (
-    <nav className="col-md-1 d-none d-md-block sidebar h-100">
+    <nav className="col-md-1 d-none d-md-block sidebar h-100 bg-dark">
     <h4>Online</h4>
       <ul className="nav-list">{renderUsers(users)}</ul>
     </nav>
