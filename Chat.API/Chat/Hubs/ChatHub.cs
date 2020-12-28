@@ -15,6 +15,7 @@ namespace Chat.Hubs
     {
         private readonly IUserService _userService;
 
+
         public ChatHub(IUserService userService)
         {
             _userService = userService;
@@ -54,9 +55,9 @@ namespace Chat.Hubs
             }
         }
 
-        public async Task SendMessage(GeneralMessage msg)
+        public async Task SendMessage(MessageInput msg)
         {
-            await Clients.All.MessageAdded(msg);
+            await Clients.All.MessageAdded(new MessageResult(msg.From, msg.Content, DateTime.Now));
         }
     }
 }

@@ -19,11 +19,11 @@ namespace Chat.Controllers
         }
 
         [HttpPost]
-        public ActionResult<User> CreateUser([FromBody] UserViewModel userViewModel)
+        public ActionResult<User> CreateUser([FromBody] UserInput userInput)
         {
             try
             {
-                var user = _userService.CreateUser(userViewModel.Username);
+                var user = _userService.CreateUser(userInput.Username);
                 return StatusCode(201, user);
             }
             catch (UsernameIsTakenException ex)

@@ -6,7 +6,7 @@ namespace Chat.Hubs.Interfaces.Client
 {
     public interface IClientChatActions
     {
-        Task MessageAdded(GeneralMessage message);
+        Task MessageAdded(MessageResult messageInput);
 
         Task UserJoined(string username);
 

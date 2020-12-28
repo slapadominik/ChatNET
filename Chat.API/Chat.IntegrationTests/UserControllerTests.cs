@@ -34,7 +34,7 @@ namespace Chat.IntegrationTests
         public async Task CreateUser_ShouldReturnCreatedUser()
         {
             //Arrange
-            var model = new UserViewModel {Username = "siema"};
+            var model = new UserInput {Username = "siema"};
             var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
             
             //Act

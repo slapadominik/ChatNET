@@ -5,6 +5,6 @@ namespace Chat.Hubs.Interfaces.Server
 {
     public interface IServerChatActions
     {
-        Task SendMessage(GeneralMessage msg);
+        Task SendMessage(MessageInput msg);
     }
 }

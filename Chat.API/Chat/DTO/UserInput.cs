@@ -1,6 +1,6 @@
 ﻿namespace Chat.DTO
 {
-    public class UserViewModel
+    public class UserInput
     {
         public string Username { get; set; }
     }
