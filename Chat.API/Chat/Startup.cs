@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Chat
@@ -33,7 +34,7 @@ namespace Chat
             services.Configure<AppSettings>(appSettingsSection);
             ConfigureAuthentication(services, appSettingsSection);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddCors(options =>
             {
                 options.AddPolicy(name: FrontEndOrigin,
@@ -52,7 +53,7 @@ namespace Chat
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -64,15 +65,20 @@ namespace Chat
             }
 
             app.UseCors(FrontEndOrigin);
+            
+            app.UseRouting();
 
             app.UseAuthentication();
+            app.UseAuthorization();
 
-            app.UseSignalR(route =>
+            app.UseEndpoints(endpoints =>
             {
-                route.MapHub<ChatHub>("/hubs/chat");
+                endpoints.MapHub<ChatHub>("/hubs/chat");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
-
-            app.UseMvc();
         }
 
         private void ConfigureAuthentication(IServiceCollection services, IConfigurationSection appSettingsSection)

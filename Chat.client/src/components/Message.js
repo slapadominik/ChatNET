@@ -18,7 +18,7 @@ const Message = ({ from, content, isAuthor }) => {
 
   const authorMsg = (msg) => {
     return (
-        <div className="col-md-6 offset-md-6">
+        <div className="col-md-6 offset-md-6 col-6 offset-6">
           <div className="card h-100 bg-primary">
             <div className="card-body">
               <span className="card-text text-white">
@@ -32,7 +32,7 @@ const Message = ({ from, content, isAuthor }) => {
 
   const otherUserMsg = (msg) => {
     return (
-        <div className="col-md-6">
+        <div className="col-md-6 col-6">
           <div className="card h-100 bg-light">
             <div className="card-body">
               <span className="card-text">
