@@ -15,4 +15,4 @@ Simple chat application created as an academic project. It's purpose is to prese
 
 <br/>
 
-![alt text](https://github.com/slapadominik/ChatNET/blob/master/docs/Images/UI.png)
+![alt text](https://github.com/slapadominik/ChatNET/blob/master/docs/Images/Chat.png)
