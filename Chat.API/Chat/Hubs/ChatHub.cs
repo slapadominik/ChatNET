@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Chat.DTO;
 using Chat.Exceptions;
@@ -7,6 +8,7 @@ using Chat.Hubs.Interfaces.Server;
 using Chat.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 
 namespace Chat.Hubs
 {
@@ -14,11 +16,13 @@ namespace Chat.Hubs
     public class ChatHub : Hub<IClientChatActions>, IServerChatActions
     {
         private readonly IUserService _userService;
+        private readonly ILogger _logger;
 
 
-        public ChatHub(IUserService userService)
+        public ChatHub(IUserService userService, ILogger<ChatHub> logger)
         {
             _userService = userService;
+            _logger = logger;
         }
 
         public override async Task OnConnectedAsync()
@@ -32,10 +36,11 @@ namespace Chat.Hubs
 
                 _userService.JoinChat(Context.ConnectionId, username);
                 await Clients.All.UserJoined(username);
+                _logger.LogInformation($"User {username} joined chat. Online users: {connectedUsers.Count()}");
             }
             catch (InvalidOperationException ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                _logger.LogError(ex, $"Failed connecting user to chat. Username {username} already taken.");
             }
         }
 
@@ -48,10 +53,11 @@ namespace Chat.Hubs
                 _userService.LeaveChat(Context.ConnectionId);
                 _userService.DeleteUser(username);
                 await Clients.All.UserLeft(username);
+                _logger.LogInformation($"User {username} disconnected from chat.");
             }
             catch (UserNotFoundException ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                _logger.LogError(ex, $"Failed disconnecting user {username} from chat.");
             }
         }
 

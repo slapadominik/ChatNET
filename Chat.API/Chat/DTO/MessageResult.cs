@@ -6,13 +6,13 @@ namespace Chat.DTO
     {
         public string From { get; }
         public string Content { get; }
-        public DateTime Created { get; }
+        public DateTime Date { get; }
 
-        public MessageResult(string @from, string content, DateTime created)
+        public MessageResult(string @from, string content, DateTime date)
         {
             From = @from;
             Content = content;
-            Created = created;
+            Date = date;
         }
     }
 }

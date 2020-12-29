@@ -38,6 +38,12 @@ class Login extends Component {
     this.setState({ username: e.target.value });
   };
 
+  handleLoginInputKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      this.handleLogin();
+    }
+  }
+
   render() {
     const { username } = this.state;
     return (
@@ -52,6 +58,7 @@ class Login extends Component {
               value={username}
               type="text"
               onChange={this.handleUsernameChange}
+              onKeyDown={this.handleLoginInputKeyDown}
             />
             <button className={'btn btn-warning'} onClick={this.handleLogin}>
               Login

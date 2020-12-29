@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Chat.Entity;
 using Chat.Exceptions;
-using Chat.Models;
 using Chat.Services.Interfaces;
 
 namespace Chat.Services

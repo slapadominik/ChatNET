@@ -12,17 +12,21 @@ import * as SignalR from '@aspnet/signalr';
 import './Main.css';
 import { BASE_URL } from '../constants';
 import Sidebar from './Sidebar';
+import { isNullOrEmpty } from '../helpers/StringHelpers';
+import moment from 'moment'
 
 class Main extends Component {
   constructor() {
     super();
     this.state = {
       newMessage: '',
+      date: new Date()
     };
     this.connection = new SignalR.HubConnectionBuilder()
       .withUrl(BASE_URL + '/hubs/chat', {
         accessTokenFactory: () => this.props.user.token,
       })
+      .configureLogging(SignalR.LogLevel.None)
       .build();
   }
 
@@ -61,11 +65,16 @@ class Main extends Component {
   };
 
   handleSend = () => {
-    this.connection.invoke('sendMessage', {
-      from: this.getUsername(),
-      content: this.state.newMessage,
-    });
-    this.setState({ newMessage: '' });
+    let msg = this.state.newMessage;
+    if (!isNullOrEmpty(msg)) {
+      this.connection.invoke('sendMessage', {
+        from: this.getUsername(),
+        content: msg,
+      });
+      this.setState({ newMessage: '' });
+    } else {
+      this.setState({ newMessage: '' });
+    }
   };
 
   checkIfAuthor = (name) => {
@@ -78,9 +87,16 @@ class Main extends Component {
         key={index}
         from={message.from}
         content={message.content}
+        date={message.date}
         isAuthor={this.checkIfAuthor(message.from)}
       />
     ));
+  };
+
+  handleMessageKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      this.handleSend();
+    }
   };
 
   render() {
@@ -89,20 +105,17 @@ class Main extends Component {
         <div className="row h-100">
           <Sidebar />
           <main className="col-md-11">
-            <div className="row username">
-              <div className="col text-center">
-                <h4>Logged as <u>{this.getUsername()}</u></h4>
-              </div>
-            </div>
-            <div className="container-msgs mt-2">{this.renderMessages()}</div>
+            <h6 className="text-center text-secondary mt-3">{moment(this.state.date).format('DD-MM-YYYY')}</h6>
+            <div className="container-msgs mt-3">{this.renderMessages()}</div>
             <div className="row fixed-bottom">
               <div className="col-md-11 offset-md-1">
                 <div className="input-group">
                   <input
                     className="form-control"
-                    placeholder="Type something.."
+                    placeholder="Type message.."
                     value={this.state.newMessage}
                     onChange={this.handleMessageChange}
+                    onKeyDown={this.handleMessageKeyDown}
                   />
                   <div className="input-group-prepend">
                     <button

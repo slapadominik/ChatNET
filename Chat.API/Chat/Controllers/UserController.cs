@@ -1,7 +1,7 @@
 ﻿using System;
 using Chat.DTO;
+using Chat.Entity;
 using Chat.Exceptions;
-using Chat.Models;
 using Chat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
